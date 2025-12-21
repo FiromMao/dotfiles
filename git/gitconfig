@@ -1,0 +1,7 @@
+[user]
+	name = FiromMao
+	email = grayred223@gmail.com
+[init]
+	default = branch
+	default = branch
+	defaultBranch = main

@@ -1,0 +1,116 @@
+" ============================
+" 基础设置
+" ============================
+set nocompatible
+set number
+set relativenumber
+set cursorline
+set autoindent
+set smartindent
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set wrap
+set encoding=utf-8
+set fileencoding=utf-8
+set mouse=a
+set noswapfile
+set hidden
+set ignorecase
+set smartcase
+set hlsearch
+set incsearch
+set termguicolors
+
+" 允许 256 色终端
+if !has("gui_running")
+    set t_Co=256
+endif
+
+" leader 键
+let mapleader = " "
+
+" ============================
+" 插件系统：vim-plug
+" ============================
+if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
+call plug#begin('~/.vim/plugged')
+
+" ---- 绿色配色主题（能跑在老 Vim） ----
+Plug 'sainnhe/everforest'
+
+" 文件树
+Plug 'preservim/nerdtree'
+
+" 状态栏（老版本 Vim 可用）
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+" 注释插件（适配所有 Vim）
+Plug 'tpope/vim-commentary'
+
+" 括号补全
+Plug 'jiangmiao/auto-pairs'
+
+" 快速对齐
+Plug 'junegunn/vim-easy-align'
+
+" C 语言缩进增强
+Plug 'vim-scripts/c.vim'
+
+" 语法检查（老 Vim 可用）
+Plug 'dense-analysis/ale'
+
+call plug#end()
+
+" ============================
+" 主题设置
+" ============================
+let g:everforest_background = 'hard'
+let g:everforest_enable_italic = 1
+let g:everforest_disable_italic_comment = 1
+colorscheme everforest
+
+" airline 使用 everforest 主题
+let g:airline_theme='everforest'
+
+" ============================
+" NERDTree 文件树
+" ============================
+nnoremap <C-n> :NERDTreeToggle<CR>
+
+" ============================
+" C 开发增强
+" ============================
+
+" ALE 基本检查设置（自动 lint C 代码）
+let g:ale_linters = {
+\   'c': ['gcc'],
+\}
+
+let g:ale_fixers = {
+\   'c': ['clang-format'],
+\}
+
+" 保存时自动格式化（如果你安装了 clang-format）
+let g:ale_fix_on_save = 1
+
+" 跳转到定义（基于 ctags）
+nnoremap gd <C-]>
+
+" 后退
+nnoremap <leader>b <C-t>
+
+" ============================
+" 常用键位
+" ============================
+nnoremap <leader>w :w<CR>
+nnoremap <leader>q :q<CR>
+
+" 注释代码（gcc）
+nnoremap <leader>/ :Commentary<CR>
+vnoremap <leader>/ :Commentary<CR>
