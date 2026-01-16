@@ -86,16 +86,16 @@ inoremap <Down>  <ESC>:echoe "Use j"<CR>
 " ====== Plugin Management ======
 call plug#begin('~/.vim/plugged')
 
-Plug 'dense-analysis/ale'              " 语法检查
-Plug 'jiangmiao/auto-pairs'            " 括号自动补全
-Plug 'sainnhe/everforest'              " Everforest 主题
-Plug 'preservim/nerdtree'              " 文件树
-Plug 'vim-airline/vim-airline'         " 状态栏
-Plug 'vim-airline/vim-airline-themes'  " 状态栏主题
-Plug 'tpope/vim-commentary'            " 快速注释
-Plug 'junegunn/vim-easy-align'         " 文本对齐
-Plug 'tpope/vim-fugitive'              " Git 集成
-Plug 'ctrlpvim/ctrlp.vim'              " 模糊搜索文件 (Ctrl+P)
+Plug 'dense-analysis/ale'              " Syntex check
+Plug 'jiangmiao/auto-pairs'            " Auto pairs
+Plug 'sainnhe/everforest'              " Everforest theme
+Plug 'preservim/nerdtree'              " Nerd tree
+Plug 'vim-airline/vim-airline'         " Status bar
+Plug 'vim-airline/vim-airline-themes'  " Air line theme
+Plug 'tpope/vim-commentary'
+Plug 'junegunn/vim-easy-align'
+Plug 'tpope/vim-fugitive'              " Git
+Plug 'ctrlpvim/ctrlp.vim'              " Fuzzy searc
 
 call plug#end()
 
