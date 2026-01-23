@@ -80,9 +80,9 @@ HIST_STAMPS="mm/dd/yyyy"
 plugins=(
 	git
 	zsh-syntax-highlighting
-  zsh-autosuggestions
-  extract
-  zsh-completions
+	zsh-autosuggestions
+	extract
+	zsh-completions
 )
 
 source $ZSH/oh-my-zsh.sh
