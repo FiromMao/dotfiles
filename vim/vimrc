@@ -113,7 +113,10 @@ let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 let g:everforest_enable_italic = 0
 let g:everforest_disable_italic_comment = 1
 
-colorscheme everforest
+" Set colorscheme only if plugin is installed
+if isdirectory(expand('~/.vim/plugged/everforest'))
+    colorscheme everforest
+endif
 
 " ====== Plugin Config & Keymaps ======
 "CtrlP
