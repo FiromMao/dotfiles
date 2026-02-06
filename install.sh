@@ -150,6 +150,18 @@ ln -sf "$DOTFILES_DIR/git/gitconfig" "$HOME/.gitconfig"
 ln -sf "$DOTFILES_DIR/vim/vimrc" "$HOME/.vimrc"
 ln -sf "$DOTFILES_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
 
+# Keyd config (system-level, requires sudo)
+if command -v keyd &> /dev/null; then
+    if [ -d "/etc/keyd" ]; then
+        sudo ln -sf "$DOTFILES_DIR/keyd/default.conf" "/etc/keyd/default.conf"
+        sudo keyd reload 2>/dev/null && echo "Keyd configuration reloaded" || echo "Keyd config linked (reload manually)"
+    else
+        echo "Warning: /etc/keyd directory not found"
+    fi
+else
+    echo "Note: keyd not installed, skipping keyd configuration"
+fi
+
 # --- 8. Vim Plugin Installation ---
 echo "📦 Installing vim plugins..."
 # Install vim plugins non-interactively

@@ -88,6 +88,9 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'dense-analysis/ale'              " Syntex check
 Plug 'jiangmiao/auto-pairs'            " Auto pairs
+
+" Auto-pairs config: use Ctrl+l to jump out of pairs
+let g:AutoPairsShortcutJump = '<C-l>'
 Plug 'sainnhe/everforest'              " Everforest theme
 Plug 'preservim/nerdtree'              " Nerd tree
 Plug 'vim-airline/vim-airline'         " Status bar
