@@ -15,22 +15,22 @@ install_packages() {
         # Ubuntu/Debian
         echo "Detected Ubuntu/Debian system"
         sudo apt-get update
-        sudo apt-get install -y vim git curl wget tmux fzf fd-find bat autojump build-essential
+        sudo apt-get install -y vim git curl wget tmux fzf fd-find bat autojump build-essential ranger
     elif command -v yum &> /dev/null; then
         # CentOS/RHEL
         echo "Detected CentOS/RHEL system"
         sudo yum update -y
-        sudo yum install -y vim git curl wget tmux fzf fd-find bat autojump gcc gcc-c++ make
+        sudo yum install -y vim git curl wget tmux fzf fd-find bat autojump gcc gcc-c++ make ranger
     elif command -v dnf &> /dev/null; then
         # Fedora
         echo "Detected Fedora system"
         sudo dnf update -y
-        sudo dnf install -y vim git curl wget tmux fzf fd-find bat autojump gcc gcc-c++ make
+        sudo dnf install -y vim git curl wget tmux fzf fd-find bat autojump gcc gcc-c++ make ranger
     elif command -v pacman &> /dev/null; then
         # Arch Linux
         echo "Detected Arch Linux system"
         sudo pacman -Sy --noconfirm
-        sudo pacman -S --noconfirm vim git curl wget tmux fzf fd bat autojump base-devel
+        sudo pacman -S --noconfirm vim git curl wget tmux fzf fd bat autojump base-devel ranger
     else
         echo "❌ Unsupported package manager. Please install vim, git, curl, wget, tmux, fzf manually."
         exit 1
@@ -149,6 +149,10 @@ ln -sf "$DOTFILES_DIR/zsh/p10k.zsh" "$HOME/.p10k.zsh"
 ln -sf "$DOTFILES_DIR/git/gitconfig" "$HOME/.gitconfig"
 ln -sf "$DOTFILES_DIR/vim/vimrc" "$HOME/.vimrc"
 ln -sf "$DOTFILES_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
+
+# Ranger config
+mkdir -p "$HOME/.config"
+ln -sf "$DOTFILES_DIR/ranger" "$HOME/.config/ranger"
 
 # Keyd config (system-level, requires sudo)
 if command -v keyd &> /dev/null; then
