@@ -148,3 +148,8 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # bat 设置预览窗口高度、布局、边框，以及调用 bat 渲染内容
 export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border --preview 'batcat --color=always --style=numbers --line-range :500 {}'"
 export PATH="$HOME/.local/bin:$PATH"
+
+# ysyx
+export AM_HOME=$HOME/Desktop/Projects/ysyx/ysyx-workbench/abstract-machine
+export NEMU_HOME=$HOME/Desktop/Projects/ysyx/ysyx-workbench/nemu
+export NPC_HOME=$HOME/Desktop/Projects/ysyx/ysyx-workbench/npc
