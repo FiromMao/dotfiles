@@ -1,10 +1,12 @@
 #!/bin/bash
 
 # Test script to validate the dotfiles installation
+DOTFILES_DIR=$(cd "$(dirname "$0")" && pwd)
+
 echo "🧪 Testing dotfiles installation..."
 
 # Check if required tools are installed
-tools=("vim" "git" "curl" "wget" "tmux" "zsh" "fzf")
+tools=("vim" "git" "curl" "wget" "tmux" "zsh")
 missing_tools=()
 
 for tool in "${tools[@]}"; do
@@ -18,6 +20,12 @@ if [ ${#missing_tools[@]} -gt 0 ]; then
     exit 1
 else
     echo "✅ All required tools are installed"
+fi
+
+if command -v fzf &> /dev/null; then
+    echo "✅ fzf is installed"
+else
+    echo "⚠️  fzf is not installed; fuzzy finder integration will be limited"
 fi
 
 # Check if oh-my-zsh is installed
@@ -48,7 +56,7 @@ else
 fi
 
 # Check if symbolic links are created
-links=("$HOME/.zshrc" "$HOME/.vimrc" "$HOME/.gitconfig" "$HOME/.tmux.conf")
+links=("$HOME/.bashrc" "$HOME/.zshrc" "$HOME/.p10k.zsh" "$HOME/.vimrc" "$HOME/.gitconfig" "$HOME/.tmux.conf" "$HOME/.config/ranger")
 for link in "${links[@]}"; do
     if [ -L "$link" ]; then
         echo "✅ $(basename "$link") symlink is created"
@@ -57,5 +65,23 @@ for link in "${links[@]}"; do
         exit 1
     fi
 done
+
+# Check syntax of linked configs when tools are available
+if command -v bash &> /dev/null; then
+    bash -n "$DOTFILES_DIR/install.sh" || exit 1
+    bash -n "$DOTFILES_DIR/test-install.sh" || exit 1
+    bash -n "$DOTFILES_DIR/bash/bashrc" || exit 1
+    echo "✅ Bash files pass syntax checks"
+fi
+
+if command -v zsh &> /dev/null; then
+    zsh -n "$DOTFILES_DIR/zsh/zshrc" || exit 1
+    echo "✅ Zsh config passes syntax check"
+fi
+
+if command -v python3 &> /dev/null; then
+    python3 -m py_compile "$DOTFILES_DIR/ranger/commands.py" || exit 1
+    echo "✅ Ranger commands pass Python syntax check"
+fi
 
 echo "🎉 All tests passed! Installation is complete."

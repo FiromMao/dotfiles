@@ -120,7 +120,7 @@ source $ZSH/oh-my-zsh.sh
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-	[[ -s /home/grayerd/.autojump/etc/profile.d/autojump.sh ]] && source /home/grayerd/.autojump/etc/profile.d/autojump.sh
+	[[ -s "$HOME/.autojump/etc/profile.d/autojump.sh" ]] && source "$HOME/.autojump/etc/profile.d/autojump.sh"
 
 	autoload -U compinit && compinit -u
 
@@ -136,20 +136,35 @@ export NVM_DIR="$HOME/.nvm"
 setopt HIST_IGNORE_SPACE
 setopt HIST_IGNORE_DUPS
 
-# 加载 fzf 快捷键绑定 (Ubuntu 系统路径)
-source /usr/share/doc/fzf/examples/key-bindings.zsh
-# 加载 fzf 自动补全
-source /usr/share/doc/fzf/examples/completion.zsh 2>/dev/null
+# Load fzf key bindings and completion when available.
+if [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
+    source /usr/share/doc/fzf/examples/key-bindings.zsh
+fi
+
+if [ -f /usr/share/doc/fzf/examples/completion.zsh ]; then
+    source /usr/share/doc/fzf/examples/completion.zsh
+fi
 
 # 让 fzf 用 fd 默认搜索不包含 .git 的所有文件，且包含隐藏文件
-export FZF_DEFAULT_COMMAND='fdfind --type f --strip-cwd-prefix --hidden --exclude .git'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+if command -v fdfind &> /dev/null; then
+    export FZF_DEFAULT_COMMAND='fdfind --type f --strip-cwd-prefix --hidden --exclude .git'
+elif command -v fd &> /dev/null; then
+    export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --exclude .git'
+fi
+
+if [ -n "$FZF_DEFAULT_COMMAND" ]; then
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+fi
 
 # bat 设置预览窗口高度、布局、边框，以及调用 bat 渲染内容
-export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border --preview 'batcat --color=always --style=numbers --line-range :500 {}'"
+if command -v batcat &> /dev/null; then
+    export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border --preview 'batcat --color=always --style=numbers --line-range :500 {}'"
+elif command -v bat &> /dev/null; then
+    export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border --preview 'bat --color=always --style=numbers --line-range :500 {}'"
+fi
+
 export PATH="$HOME/.local/bin:$PATH"
 
-# ysyx
-export AM_HOME=$HOME/Desktop/Projects/ysyx/ysyx-workbench/abstract-machine
-export NEMU_HOME=$HOME/Desktop/Projects/ysyx/ysyx-workbench/nemu
-export NPC_HOME=$HOME/Desktop/Projects/ysyx/ysyx-workbench/npc
+if [ -f "$HOME/.config/config.sh" ]; then
+    source "$HOME/.config/config.sh"
+fi
