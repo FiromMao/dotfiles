@@ -18,6 +18,12 @@ This is a comprehensive dotfiles setup script that configures a complete develop
 git clone <your-repo-url> ~/dotfiles
 cd ~/dotfiles
 
+# Review prerequisites and detected environment
+./install.sh --check
+
+# Preview the changes without modifying your system
+./install.sh --dry-run
+
 # Run the installation script
 ./install.sh
 
@@ -32,11 +38,15 @@ cd ~/dotfiles
 - `curl` - HTTP client
 - `wget` - File downloader
 - `tmux` - Terminal multiplexer
+- `zsh` - Shell
+
+### Optional Tools
 - `fzf` - Fuzzy finder
 - `fd-find` - Fast file finder
 - `bat` - Cat with wings
 - `autojump` - Directory jumper
-- `zsh` - Shell
+- `ranger` - Terminal file manager
+- `xclip` - Clipboard integration
 
 ### Oh My Zsh Setup
 - Oh My Zsh framework
@@ -58,11 +68,14 @@ cd ~/dotfiles
 - ctrlp.vim
 
 ### Configuration Files
+- `.bashrc` - Bash configuration
 - `.zshrc` - Zsh configuration
 - `.vimrc` - Vim configuration
 - `.gitconfig` - Git configuration
 - `.tmux.conf` - Tmux configuration
 - `.p10k.zsh` - Powerlevel10k configuration
+- `~/.config/ranger` - Ranger configuration
+- `~/.config/config.sh` - Optional local machine overrides
 
 ## 🔄 Post-Installation
 
@@ -70,6 +83,8 @@ cd ~/dotfiles
    ```bash
    source ~/.zshrc
    ```
+
+   Note: your current shell session may still report Bash until you log out and log back in.
 
 2. **Configure Powerlevel10k**:
    ```bash
@@ -87,6 +102,9 @@ Run the test script to verify everything is installed correctly:
 ```bash
 ./test-install.sh
 ```
+
+The test script checks required tools, installed plugins, symlinked config files,
+and syntax validation for the Bash, Zsh, and Ranger config files when the required tools are available.
 
 ## 📁 Directory Structure
 
@@ -128,13 +146,24 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.c
 vim +PlugInstall +qall
 ```
 
+### Local Machine Overrides
+```bash
+mkdir -p ~/.config
+cp ~/dotfiles/.config/config.sh ~/.config/config.sh
+```
+
+Edit `~/.config/config.sh` for machine-specific paths, environment variables, proxy settings, or local aliases.
+
 ## 🐛 Troubleshooting
 
 ### Permission Issues
-If you get permission errors, make sure the script is executable:
+If you get permission errors, make sure the script is executable and that your user can use `sudo`:
 ```bash
 chmod +x install.sh
+sudo -v
 ```
+
+If `sudo -v` fails, use a user with sudo access or configure sudo for that account first.
 
 ### Plugin Installation Issues
 If vim plugins don't install automatically:
@@ -147,6 +176,8 @@ If your shell didn't change to zsh:
 ```bash
 chsh -s $(which zsh)
 ```
+
+If `getent passwd $USER` shows zsh but `echo $SHELL` still shows Bash, log out and log back in before testing again.
 
 ### Fzf Issues
 If fzf key-bindings don't work:
@@ -161,15 +192,18 @@ source /usr/share/doc/fzf/examples/key-bindings.zsh
 ## 🎨 Customization
 
 Feel free to modify the configuration files in the respective directories:
+- Edit `bash/bashrc` for shared Bash settings
 - Edit `zsh/zshrc` for shell settings
 - Edit `vim/vimrc` for editor settings
 - Edit `git/gitconfig` for git settings
 - Edit `tmux/tmux.conf` for terminal multiplexer settings
 
+For machine-specific settings, prefer `~/.config/config.sh` instead of hardcoding personal paths or local environment details into the shared dotfiles repository.
+
 ## 📝 Notes
 
 - The script detects your Linux distribution and uses the appropriate package manager
-- All installations are done in your home directory, no system-wide changes except package installation
+- Most files are installed into your home directory, but the script also installs packages and may change your default shell to zsh
 - The script creates symlinks to the dotfiles, so you can edit the configurations in this repository
 - Some installations may require sudo privileges for system packages
 
