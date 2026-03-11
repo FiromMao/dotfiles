@@ -52,6 +52,14 @@ print_check() {
     echo "[check] $1"
 }
 
+has_sudo_group() {
+    if groups 2>/dev/null | grep -Eq '(^|[[:space:]])(sudo|wheel|admin)($|[[:space:]])'; then
+        return 0
+    fi
+
+    return 1
+}
+
 check_command() {
     local command_name="$1"
 
@@ -92,6 +100,19 @@ preflight_checks() {
         print_check "no supported package manager detected"
     fi
 
+    echo "Checking privilege escalation..."
+    if [ "$(id -u)" -eq 0 ]; then
+        print_check "running as root"
+    elif ! command -v sudo &> /dev/null; then
+        print_check "sudo is not installed"
+    elif sudo -n true 2>/dev/null; then
+        print_check "sudo works without a password prompt"
+    elif has_sudo_group; then
+        print_check "sudo likely available but will require your password"
+    else
+        print_check "sudo access is not configured for this user"
+    fi
+
     echo "Checking config sources..."
     check_path "$DOTFILES_DIR/bash/bashrc"
     check_path "$DOTFILES_DIR/zsh/zshrc"
@@ -124,6 +145,23 @@ install_ohmyzsh() {
     fi
 
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+}
+
+ensure_sudo_access() {
+    if [ "$(id -u)" -eq 0 ]; then
+        return 0
+    fi
+
+    if ! command -v sudo &> /dev/null; then
+        echo "❌ sudo is required for package installation but is not installed"
+        exit 1
+    fi
+
+    echo "🔐 Checking sudo access..."
+    if ! sudo -v; then
+        echo "❌ Unable to authenticate with sudo. Use a user with sudo access, or configure sudo for this account first."
+        exit 1
+    fi
 }
 
 link_config() {
@@ -244,6 +282,7 @@ if [ "$CHECK_ONLY" -eq 1 ]; then
     exit 0
 fi
 
+ensure_sudo_access
 check_and_install_packages
 setup_zsh
 
