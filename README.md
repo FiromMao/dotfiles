@@ -154,6 +154,10 @@ cp ~/dotfiles/.config/config.sh ~/.config/config.sh
 
 Edit `~/.config/config.sh` for machine-specific paths, environment variables, proxy settings, or local aliases.
 
+This file is sourced by both `bash/bashrc` and `zsh/zshrc` when it exists, so it is the preferred place for host-specific settings such as local development paths, private tools, or workstation-only aliases.
+
+Keep shared defaults in this repository, and keep machine-specific overrides in `~/.config/config.sh` so your tracked dotfiles stay portable.
+
 ## 🐛 Troubleshooting
 
 ### Permission Issues
@@ -199,6 +203,8 @@ Feel free to modify the configuration files in the respective directories:
 - Edit `tmux/tmux.conf` for terminal multiplexer settings
 
 For machine-specific settings, prefer `~/.config/config.sh` instead of hardcoding personal paths or local environment details into the shared dotfiles repository.
+
+Typical examples include project directories, local tool installs, proxy variables, and personal PATH additions that should not be committed.
 
 ## 📝 Notes
 
